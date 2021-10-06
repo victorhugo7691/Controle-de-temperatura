@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=controle_de_temperatura.X
+PROJECTNAME=Controle-de-temperatura
 
 # Active Configuration
 DEFAULTCONF=default

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
-  <executable name="dist/default/production\controle_de_temperatura.X.production.hex">
+  <executable name="dist/default/production\Controle-de-temperatura.production.hex">
     <memory name="program">
       <units>bytes</units>
       <length>32768</length>
-      <used>14770</used>
-      <free>17998</free>
+      <used>14960</used>
+      <free>17808</free>
     </memory>
     <memory name="data">
       <units>bytes</units>

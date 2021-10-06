@@ -5884,7 +5884,16 @@ char temperature[8];
 float temperatura;
 float temperaturaMaxima = 50;
 float temperaturaMinima = 25;
-int encerrar = 0;
+int encerrar = 10;
+
+void estabilizarTemperatura(){
+    if(temperatura <= 26){
+        temperatura = 30;
+    }
+    if( temperatura >= 50){
+        temperatura = 40;
+    }
+}
 
 void alerta(){
     if(temperatura > temperaturaMaxima || temperatura < temperaturaMinima){
@@ -5894,6 +5903,7 @@ void alerta(){
             imprime_lcd("ERRO Temperatura");
             _delay((unsigned long)((1000)*(4000000/4000.0)));
             limpa_lcd( );
+            estabilizarTemperatura();
         }
 }
 
@@ -5934,7 +5944,7 @@ void __attribute__((picinterrupt(("")))) isr(void){
 
         INTCONbits.TMR0IF = 0;
     }
-# 81 "lcd.frase.c"
+# 91 "lcd.frase.c"
 }
 
 int main(){
@@ -5963,7 +5973,8 @@ int main(){
     imprime_lcd("CTRL Temperatura");
     temperatura = 40.0;
 
-    while (encerrar == 0) {
+    while (encerrar != 0) {
+        encerrar--;
         limpa_lcd( );
         _delay((unsigned long)((1000)*(4000000/4000.0)));
         comando_lcd(128);

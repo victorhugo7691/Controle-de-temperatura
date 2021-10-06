@@ -20,7 +20,16 @@ char temperature[8];
 float temperatura;
 float temperaturaMaxima = 50;
 float temperaturaMinima = 25;
-int encerrar = 0;
+int encerrar = 10;
+
+void estabilizarTemperatura(){
+    if(temperatura <= 26){
+        temperatura = 30;
+    }
+    if( temperatura >= 50){
+        temperatura = 40;
+    }
+}
 
 void alerta(){
     if(temperatura > temperaturaMaxima || temperatura < temperaturaMinima){
@@ -30,6 +39,7 @@ void alerta(){
             imprime_lcd("ERRO Temperatura");
             __delay_ms(1000);
             limpa_lcd( );
+            estabilizarTemperatura();
         }
 }
 
@@ -55,8 +65,6 @@ void __interrupt() isr(void){
             } else  {
                 temperatura--;
             }
-       // PORTD = 0x00;
-       // __delay_ms(1000);
            }
     
     if(INTCONbits.TMR0IE && INTCONbits.TMR0IF) {
@@ -106,7 +114,8 @@ int main(){
     imprime_lcd("CTRL Temperatura");
     temperatura = 40.0;
      
-    while (encerrar == 0) {
+    while (encerrar != 0) {
+        encerrar--;
         limpa_lcd( );
         __delay_ms(1000);
         comando_lcd(128);
@@ -116,6 +125,5 @@ int main(){
         sprintf(temperature, "%3.2f", temperatura);
         imprime_lcd(temperature);
         __delay_ms(1000);
-
     }
 }

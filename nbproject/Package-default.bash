@@ -10,9 +10,9 @@ CND_CONF=default
 CND_DISTDIR=dist
 TMPDIR=build/${CND_CONF}/${IMAGE_TYPE}/tmp-packaging
 TMPDIRNAME=tmp-packaging
-OUTPUT_PATH=dist/${CND_CONF}/${IMAGE_TYPE}/controle_de_temperatura.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
-OUTPUT_BASENAME=controle_de_temperatura.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
-PACKAGE_TOP_DIR=controledetemperatura.x/
+OUTPUT_PATH=dist/${CND_CONF}/${IMAGE_TYPE}/Controle-de-temperatura.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+OUTPUT_BASENAME=Controle-de-temperatura.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+PACKAGE_TOP_DIR=controle-de-temperatura/
 
 # Functions
 function checkReturnCode
@@ -57,15 +57,15 @@ mkdir -p ${TMPDIR}
 
 # Copy files and create directories and links
 cd "${TOP}"
-makeDirectory ${TMPDIR}/controledetemperatura.x/bin
+makeDirectory ${TMPDIR}/controle-de-temperatura/bin
 copyFileToTmpDir "${OUTPUT_PATH}" "${TMPDIR}/${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}" 0755
 
 
 # Generate tar file
 cd "${TOP}"
-rm -f ${CND_DISTDIR}/${CND_CONF}/package/controledetemperatura.x.tar
+rm -f ${CND_DISTDIR}/${CND_CONF}/package/controle-de-temperatura.tar
 cd ${TMPDIR}
-tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/package/controledetemperatura.x.tar *
+tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/package/controle-de-temperatura.tar *
 checkReturnCode
 
 # Cleanup
