@@ -11,11 +11,8 @@
 
 
 
-
 #pragma config FOSC = HS
-
 #pragma config WDT = OFF
-
 #pragma config MCLRE = ON
 
 
@@ -5637,7 +5634,7 @@ extern __attribute__((nonreentrant)) void _delaywdt(unsigned long);
 #pragma intrinsic(_delay3)
 extern __attribute__((nonreentrant)) void _delay3(unsigned char);
 # 33 "C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC18Fxxxx_DFP/1.2.26/xc8\\pic\\include\\xc.h" 2 3
-# 14 "lcd.frase.c" 2
+# 11 "lcd.frase.c" 2
 
 # 1 "C:\\Program Files\\Microchip\\xc8\\v2.32\\pic\\include\\c99\\stdio.h" 1 3
 # 24 "C:\\Program Files\\Microchip\\xc8\\v2.32\\pic\\include\\c99\\stdio.h" 3
@@ -5777,7 +5774,7 @@ char *ctermid(char *);
 
 
 char *tempnam(const char *, const char *);
-# 15 "lcd.frase.c" 2
+# 12 "lcd.frase.c" 2
 
 
 # 1 "./lcd.intermed.h" 1
@@ -5877,23 +5874,13 @@ dado_lcd(frase[indice]);
 indice++;
     }
 }
-# 17 "lcd.frase.c" 2
+# 14 "lcd.frase.c" 2
 
 
 char temperature[8];
 float temperatura;
 float temperaturaMaxima = 50;
 float temperaturaMinima = 25;
-int encerrar = 10;
-
-void estabilizarTemperatura(){
-    if(temperatura <= 26){
-        temperatura = 30;
-    }
-    if( temperatura >= 50){
-        temperatura = 40;
-    }
-}
 
 void alerta(){
     if(temperatura > temperaturaMaxima || temperatura < temperaturaMinima){
@@ -5903,21 +5890,20 @@ void alerta(){
             imprime_lcd("ERRO Temperatura");
             _delay((unsigned long)((1000)*(4000000/4000.0)));
             limpa_lcd( );
-            estabilizarTemperatura();
         }
 }
 
 void verificaOValor(){
     if(temperatura>=50){
-                temperatura--;
+                temperatura = temperatura - 10;
             } else if(temperatura <= 25){
-                temperatura++;
+                temperatura = temperatura + 10 ;
             }
 }
 
 void __attribute__((picinterrupt(("")))) isr(void){
 
-    if(INTCON3bits.INT1IF==1) {
+    if(INTCON3bits.INT1IF == 1) {
 
         INTCON3bits.INT1IF = 0;
 
@@ -5929,11 +5915,12 @@ void __attribute__((picinterrupt(("")))) isr(void){
             } else {
                 temperatura--;
             }
-
-
            }
 
     if(INTCONbits.TMR0IE && INTCONbits.TMR0IF) {
+
+
+
 
         alerta();
         verificaOValor();
@@ -5944,7 +5931,7 @@ void __attribute__((picinterrupt(("")))) isr(void){
 
         INTCONbits.TMR0IF = 0;
     }
-# 91 "lcd.frase.c"
+
 }
 
 int main(){
@@ -5973,8 +5960,7 @@ int main(){
     imprime_lcd("CTRL Temperatura");
     temperatura = 40.0;
 
-    while (encerrar != 0) {
-        encerrar--;
+    while (1) {
         limpa_lcd( );
         _delay((unsigned long)((1000)*(4000000/4000.0)));
         comando_lcd(128);
@@ -5984,6 +5970,5 @@ int main(){
         sprintf(temperature, "%3.2f", temperatura);
         imprime_lcd(temperature);
         _delay((unsigned long)((1000)*(4000000/4000.0)));
-
     }
 }
