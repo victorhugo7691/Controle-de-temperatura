@@ -781,259 +781,327 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;lcd.frase.c: 16: char temperature[8];
 [v _temperature `uc ~T0 @X0 -> 8 `i e ]
 "17
-[; ;lcd.frase.c: 17: float temperatura;
+[; ;lcd.frase.c: 17: float temperatura = 40;
 [v _temperatura `f ~T0 @X0 1 e ]
+[i _temperatura
+-> -> 40 `i `f
+]
 "18
-[; ;lcd.frase.c: 18: float temperaturaMaxima = 50;
+[; ;lcd.frase.c: 18: float temperaturaMaxima = 85;
 [v _temperaturaMaxima `f ~T0 @X0 1 e ]
 [i _temperaturaMaxima
--> -> 50 `i `f
+-> -> 85 `i `f
 ]
 "19
-[; ;lcd.frase.c: 19: float temperaturaMinima = 25;
+[; ;lcd.frase.c: 19: float temperaturaMinima = 15;
 [v _temperaturaMinima `f ~T0 @X0 1 e ]
 [i _temperaturaMinima
--> -> 25 `i `f
+-> -> 15 `i `f
 ]
-"21
-[; ;lcd.frase.c: 21: void alerta(){
+"20
+[; ;lcd.frase.c: 20: int tensao;
+[v _tensao `i ~T0 @X0 1 e ]
+"22
+[; ;lcd.frase.c: 22: void geraTensao(){
+[v _geraTensao `(v ~T0 @X0 1 ef ]
+{
+[e :U _geraTensao ]
+[f ]
+"23
+[; ;lcd.frase.c: 23:     switch(tensao){
+[e $U 379  ]
+{
+"24
+[; ;lcd.frase.c: 24:         case 0:
+[e :U 380 ]
+"25
+[; ;lcd.frase.c: 25:             temperatura = 0;
+[e = _temperatura -> -> 0 `i `f ]
+"26
+[; ;lcd.frase.c: 26:             break;
+[e $U 378  ]
+"27
+[; ;lcd.frase.c: 27:         case 1:
+[e :U 381 ]
+"28
+[; ;lcd.frase.c: 28:             temperatura = 20;
+[e = _temperatura -> -> 20 `i `f ]
+"29
+[; ;lcd.frase.c: 29:             break;
+[e $U 378  ]
+"30
+[; ;lcd.frase.c: 30:         case 2:
+[e :U 382 ]
+"31
+[; ;lcd.frase.c: 31:             temperatura = 40;
+[e = _temperatura -> -> 40 `i `f ]
+"32
+[; ;lcd.frase.c: 32:             break;
+[e $U 378  ]
+"33
+[; ;lcd.frase.c: 33:         case 3:
+[e :U 383 ]
+"34
+[; ;lcd.frase.c: 34:             temperatura = 60;
+[e = _temperatura -> -> 60 `i `f ]
+"35
+[; ;lcd.frase.c: 35:             break;
+[e $U 378  ]
+"36
+[; ;lcd.frase.c: 36:         case 4:
+[e :U 384 ]
+"37
+[; ;lcd.frase.c: 37:             temperatura = 80;
+[e = _temperatura -> -> 80 `i `f ]
+"38
+[; ;lcd.frase.c: 38:             break;
+[e $U 378  ]
+"39
+[; ;lcd.frase.c: 39:         case 5:
+[e :U 385 ]
+"40
+[; ;lcd.frase.c: 40:             temperatura = 100;
+[e = _temperatura -> -> 100 `i `f ]
+"41
+[; ;lcd.frase.c: 41:             break;
+[e $U 378  ]
+"42
+[; ;lcd.frase.c: 42:         default:
+[e :U 386 ]
+"43
+[; ;lcd.frase.c: 43:             temperatura = 10;
+[e = _temperatura -> -> 10 `i `f ]
+"44
+[; ;lcd.frase.c: 44:     }
+}
+[e $U 378  ]
+[e :U 379 ]
+[e [\ _tensao , $ -> 0 `i 380
+ , $ -> 1 `i 381
+ , $ -> 2 `i 382
+ , $ -> 3 `i 383
+ , $ -> 4 `i 384
+ , $ -> 5 `i 385
+ 386 ]
+[e :U 378 ]
+"45
+[; ;lcd.frase.c: 45: }
+[e :UE 377 ]
+}
+"47
+[; ;lcd.frase.c: 47: void alerta(){
 [v _alerta `(v ~T0 @X0 1 ef ]
 {
 [e :U _alerta ]
 [f ]
-"22
-[; ;lcd.frase.c: 22:     if(temperatura > temperaturaMaxima || temperatura < temperaturaMinima){
-[e $ ! || > _temperatura _temperaturaMaxima < _temperatura _temperaturaMinima 378  ]
+"48
+[; ;lcd.frase.c: 48:     if(temperatura > temperaturaMaxima || temperatura < temperaturaMinima){
+[e $ ! || > _temperatura _temperaturaMaxima < _temperatura _temperaturaMinima 388  ]
 {
-"23
-[; ;lcd.frase.c: 23:             limpa_lcd( );
+"49
+[; ;lcd.frase.c: 49:             limpa_lcd( );
 [e ( _limpa_lcd ..  ]
-"24
-[; ;lcd.frase.c: 24:             _delay((unsigned long)((1000)*(4000000/4000.0)));
+"50
+[; ;lcd.frase.c: 50:             _delay((unsigned long)((1000)*(4000000/4000.0)));
 [e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 4000000 `l `d .4000.0 `ul ]
-"25
-[; ;lcd.frase.c: 25:             comando_lcd(128);
+"51
+[; ;lcd.frase.c: 51:             comando_lcd(128);
 [e ( _comando_lcd (1 -> -> 128 `i `ui ]
-"26
-[; ;lcd.frase.c: 26:             imprime_lcd("ERRO Temperatura");
+"52
+[; ;lcd.frase.c: 52:             imprime_lcd("ERRO Temperatura");
 [e ( _imprime_lcd (1 :s 1C ]
-"27
-[; ;lcd.frase.c: 27:             _delay((unsigned long)((1000)*(4000000/4000.0)));
+"53
+[; ;lcd.frase.c: 53:             _delay((unsigned long)((1000)*(4000000/4000.0)));
 [e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 4000000 `l `d .4000.0 `ul ]
-"28
-[; ;lcd.frase.c: 28:             limpa_lcd( );
+"54
+[; ;lcd.frase.c: 54:             limpa_lcd( );
 [e ( _limpa_lcd ..  ]
-"29
-[; ;lcd.frase.c: 29:         }
+"55
+[; ;lcd.frase.c: 55:         }
 }
-[e :U 378 ]
-"30
-[; ;lcd.frase.c: 30: }
-[e :UE 377 ]
+[e :U 388 ]
+"56
+[; ;lcd.frase.c: 56: }
+[e :UE 387 ]
 }
-"32
-[; ;lcd.frase.c: 32: void verificaOValor(){
+"58
+[; ;lcd.frase.c: 58: void verificaOValor(){
 [v _verificaOValor `(v ~T0 @X0 1 ef ]
 {
 [e :U _verificaOValor ]
 [f ]
-"33
-[; ;lcd.frase.c: 33:     if(temperatura>=50){
-[e $ ! >= _temperatura -> -> 50 `i `f 380  ]
+"59
+[; ;lcd.frase.c: 59:     if(temperatura >= temperaturaMaxima || temperatura <= temperaturaMinima){
+[e $ ! || >= _temperatura _temperaturaMaxima <= _temperatura _temperaturaMinima 390  ]
 {
-"34
-[; ;lcd.frase.c: 34:                 temperatura = temperatura - 10;
-[e = _temperatura - _temperatura -> -> 10 `i `f ]
-"35
-[; ;lcd.frase.c: 35:             } else if(temperatura <= 25){
+"60
+[; ;lcd.frase.c: 60:         tensao = 2;
+[e = _tensao -> 2 `i ]
+"61
+[; ;lcd.frase.c: 61:     }
 }
-[e $U 381  ]
-[e :U 380 ]
-[e $ ! <= _temperatura -> -> 25 `i `f 382  ]
-{
-"36
-[; ;lcd.frase.c: 36:                 temperatura = temperatura + 10 ;
-[e = _temperatura + _temperatura -> -> 10 `i `f ]
-"37
-[; ;lcd.frase.c: 37:             }
-}
-[e :U 382 ]
-[e :U 381 ]
-"38
-[; ;lcd.frase.c: 38: }
-[e :UE 379 ]
+[e :U 390 ]
+"62
+[; ;lcd.frase.c: 62: }
+[e :UE 389 ]
 }
 [v $root$_isr `(v ~T0 @X0 0 e ]
-"40
-[; ;lcd.frase.c: 40: void __attribute__((picinterrupt(("")))) isr(void){
+"64
+[; ;lcd.frase.c: 64: void __attribute__((picinterrupt(("")))) isr(void){
 [v _isr `(v ~T36 @X0 1 ef ]
 {
 [e :U _isr ]
 [f ]
-"42
-[; ;lcd.frase.c: 42:     if(INTCON3bits.INT1IF == 1) {
-[e $ ! == -> . . _INTCON3bits 0 0 `i -> 1 `i 384  ]
-{
-"44
-[; ;lcd.frase.c: 44:         INTCON3bits.INT1IF = 0;
-[e = . . _INTCON3bits 0 0 -> -> 0 `i `uc ]
-"46
-[; ;lcd.frase.c: 46:             if(temperatura>=50){
-[e $ ! >= _temperatura -> -> 50 `i `f 385  ]
-{
-"47
-[; ;lcd.frase.c: 47:                 temperatura--;
-[e -- _temperatura -> -> 1 `i `f ]
-"49
-[; ;lcd.frase.c: 49:             } else if(temperatura <= 25){
-}
-[e $U 386  ]
-[e :U 385 ]
-[e $ ! <= _temperatura -> -> 25 `i `f 387  ]
-{
-"50
-[; ;lcd.frase.c: 50:                 temperatura++;
-[e ++ _temperatura -> -> 1 `i `f ]
-"51
-[; ;lcd.frase.c: 51:             } else {
-}
-[e $U 388  ]
-[e :U 387 ]
-{
-"52
-[; ;lcd.frase.c: 52:                 temperatura--;
-[e -- _temperatura -> -> 1 `i `f ]
-"53
-[; ;lcd.frase.c: 53:             }
-}
-[e :U 388 ]
-[e :U 386 ]
-"54
-[; ;lcd.frase.c: 54:            }
-}
-[e :U 384 ]
-"56
-[; ;lcd.frase.c: 56:     if(INTCONbits.TMR0IE && INTCONbits.TMR0IF) {
-[e $ ! && != -> . . _INTCONbits 0 5 `i -> 0 `i != -> . . _INTCONbits 0 2 `i -> 0 `i 389  ]
-{
-"61
-[; ;lcd.frase.c: 61:         alerta();
-[e ( _alerta ..  ]
-"62
-[; ;lcd.frase.c: 62:         verificaOValor();
-[e ( _verificaOValor ..  ]
-"64
-[; ;lcd.frase.c: 64:         temperatura = temperatura - 0.01;
-[e = _temperatura -> - -> _temperatura `d .0.01 `f ]
 "66
-[; ;lcd.frase.c: 66:   TMR0L = 5;
-[e = _TMR0L -> -> 5 `i `uc ]
+[; ;lcd.frase.c: 66:     if(INTCON3bits.INT1IF == 1) {
+[e $ ! == -> . . _INTCON3bits 0 0 `i -> 1 `i 392  ]
+{
 "68
-[; ;lcd.frase.c: 68:         INTCONbits.TMR0IF = 0;
-[e = . . _INTCONbits 0 2 -> -> 0 `i `uc ]
-"69
-[; ;lcd.frase.c: 69:     }
-}
-[e :U 389 ]
+[; ;lcd.frase.c: 68:         INTCON3bits.INT1IF = 0;
+[e = . . _INTCON3bits 0 0 -> -> 0 `i `uc ]
+"70
+[; ;lcd.frase.c: 70:        tensao--;
+[e -- _tensao -> 1 `i ]
 "71
-[; ;lcd.frase.c: 71: }
-[e :UE 383 ]
+[; ;lcd.frase.c: 71:     }
+}
+[e :U 392 ]
+"73
+[; ;lcd.frase.c: 73:     if(INTCONbits.TMR0IE && INTCONbits.TMR0IF) {
+[e $ ! && != -> . . _INTCONbits 0 5 `i -> 0 `i != -> . . _INTCONbits 0 2 `i -> 0 `i 393  ]
+{
+"78
+[; ;lcd.frase.c: 78:         alerta();
+[e ( _alerta ..  ]
+"79
+[; ;lcd.frase.c: 79:         verificaOValor();
+[e ( _verificaOValor ..  ]
+"80
+[; ;lcd.frase.c: 80:         geraTensao();
+[e ( _geraTensao ..  ]
+"82
+[; ;lcd.frase.c: 82:   TMR0L = 5;
+[e = _TMR0L -> -> 5 `i `uc ]
+"84
+[; ;lcd.frase.c: 84:         INTCONbits.TMR0IF = 0;
+[e = . . _INTCONbits 0 2 -> -> 0 `i `uc ]
+"85
+[; ;lcd.frase.c: 85:     }
+}
+[e :U 393 ]
+"87
+[; ;lcd.frase.c: 87: }
+[e :UE 391 ]
 }
 [v $root$_main `(v ~T0 @X0 0 e ]
-"73
-[; ;lcd.frase.c: 73: int main(){
+"89
+[; ;lcd.frase.c: 89: int main(){
 [v _main `(i ~T0 @X0 1 ef ]
 {
 [e :U _main ]
 [f ]
-"74
-[; ;lcd.frase.c: 74:     PORTAbits.RA4 = 0;
-[e = . . _PORTAbits 0 4 -> -> 0 `i `uc ]
-"76
-[; ;lcd.frase.c: 76:     INTCONbits.GIE =1;
-[e = . . _INTCONbits 1 7 -> -> 1 `i `uc ]
-"77
-[; ;lcd.frase.c: 77:     INTCONbits.TMR0IE = 1;
-[e = . . _INTCONbits 0 5 -> -> 1 `i `uc ]
-"79
-[; ;lcd.frase.c: 79:  T0CON = 0B11000111;
-[e = _T0CON -> -> 199 `i `uc ]
-"80
-[; ;lcd.frase.c: 80:     TMR0L = 5;
-[e = _TMR0L -> -> 5 `i `uc ]
-"82
-[; ;lcd.frase.c: 82:     TRISD = 0;
-[e = _TRISD -> -> 0 `i `uc ]
-"83
-[; ;lcd.frase.c: 83:     TRISE = 0;
-[e = _TRISE -> -> 0 `i `uc ]
-"84
-[; ;lcd.frase.c: 84:     ADCON1 = 15;
-[e = _ADCON1 -> -> 15 `i `uc ]
-"86
-[; ;lcd.frase.c: 86:     INTCON3bits.INT1IE = 1;
-[e = . . _INTCON3bits 0 3 -> -> 1 `i `uc ]
-"87
-[; ;lcd.frase.c: 87:     INTCON3bits.INT1IF = 0;
-[e = . . _INTCON3bits 0 0 -> -> 0 `i `uc ]
-"88
-[; ;lcd.frase.c: 88:     INTCON2bits.INTEDG1 = 1;
-[e = . . _INTCON2bits 1 5 -> -> 1 `i `uc ]
 "90
-[; ;lcd.frase.c: 90:     comando_lcd(0b00111100);
-[e ( _comando_lcd (1 -> -> 60 `i `ui ]
-"91
-[; ;lcd.frase.c: 91:     comando_lcd(0b00001100);
-[e ( _comando_lcd (1 -> -> 12 `i `ui ]
+[; ;lcd.frase.c: 90:     PORTAbits.RA4 = 0;
+[e = . . _PORTAbits 0 4 -> -> 0 `i `uc ]
+"92
+[; ;lcd.frase.c: 92:     INTCONbits.GIE =1;
+[e = . . _INTCONbits 1 7 -> -> 1 `i `uc ]
 "93
-[; ;lcd.frase.c: 93:     limpa_lcd( );
-[e ( _limpa_lcd ..  ]
+[; ;lcd.frase.c: 93:     INTCONbits.TMR0IE = 1;
+[e = . . _INTCONbits 0 5 -> -> 1 `i `uc ]
 "95
-[; ;lcd.frase.c: 95:     comando_lcd(128);
-[e ( _comando_lcd (1 -> -> 128 `i `ui ]
+[; ;lcd.frase.c: 95:  T0CON = 0B11000111;
+[e = _T0CON -> -> 199 `i `uc ]
 "96
-[; ;lcd.frase.c: 96:     imprime_lcd("CTRL Temperatura");
-[e ( _imprime_lcd (1 :s 2C ]
-"97
-[; ;lcd.frase.c: 97:     temperatura = 40.0;
-[e = _temperatura -> .40.0 `f ]
+[; ;lcd.frase.c: 96:     TMR0L = 5;
+[e = _TMR0L -> -> 5 `i `uc ]
+"98
+[; ;lcd.frase.c: 98:     TRISD = 0;
+[e = _TRISD -> -> 0 `i `uc ]
 "99
-[; ;lcd.frase.c: 99:     while (1) {
-[e :U 392 ]
-{
+[; ;lcd.frase.c: 99:     TRISE = 0;
+[e = _TRISE -> -> 0 `i `uc ]
 "100
-[; ;lcd.frase.c: 100:         limpa_lcd( );
-[e ( _limpa_lcd ..  ]
-"101
-[; ;lcd.frase.c: 101:         _delay((unsigned long)((1000)*(4000000/4000.0)));
-[e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 4000000 `l `d .4000.0 `ul ]
+[; ;lcd.frase.c: 100:     ADCON1 = 15;
+[e = _ADCON1 -> -> 15 `i `uc ]
 "102
-[; ;lcd.frase.c: 102:         comando_lcd(128);
-[e ( _comando_lcd (1 -> -> 128 `i `ui ]
+[; ;lcd.frase.c: 102:     INTCON3bits.INT1IE = 1;
+[e = . . _INTCON3bits 0 3 -> -> 1 `i `uc ]
 "103
-[; ;lcd.frase.c: 103:         imprime_lcd("Temperatura");
-[e ( _imprime_lcd (1 :s 3C ]
-"105
-[; ;lcd.frase.c: 105:         comando_lcd(192);
-[e ( _comando_lcd (1 -> -> 192 `i `ui ]
+[; ;lcd.frase.c: 103:     INTCON3bits.INT1IF = 0;
+[e = . . _INTCON3bits 0 0 -> -> 0 `i `uc ]
+"104
+[; ;lcd.frase.c: 104:     INTCON2bits.INTEDG1 = 1;
+[e = . . _INTCON2bits 1 5 -> -> 1 `i `uc ]
 "106
-[; ;lcd.frase.c: 106:         sprintf(temperature, "%3.2f", temperatura);
-[e ( _sprintf (1 , (. , &U _temperature :s 4C -> _temperatura `d ]
+[; ;lcd.frase.c: 106:     comando_lcd(0b00111100);
+[e ( _comando_lcd (1 -> -> 60 `i `ui ]
 "107
-[; ;lcd.frase.c: 107:         imprime_lcd(temperature);
-[e ( _imprime_lcd (1 &U _temperature ]
-"108
-[; ;lcd.frase.c: 108:         _delay((unsigned long)((1000)*(4000000/4000.0)));
-[e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 4000000 `l `d .4000.0 `ul ]
+[; ;lcd.frase.c: 107:     comando_lcd(0b00001100);
+[e ( _comando_lcd (1 -> -> 12 `i `ui ]
 "109
-[; ;lcd.frase.c: 109:     }
+[; ;lcd.frase.c: 109:     limpa_lcd( );
+[e ( _limpa_lcd ..  ]
+"111
+[; ;lcd.frase.c: 111:     comando_lcd(128);
+[e ( _comando_lcd (1 -> -> 128 `i `ui ]
+"112
+[; ;lcd.frase.c: 112:     imprime_lcd("CTRL Temperatura");
+[e ( _imprime_lcd (1 :s 2C ]
+"113
+[; ;lcd.frase.c: 113:     tensao = 2;
+[e = _tensao -> 2 `i ]
+"115
+[; ;lcd.frase.c: 115:     while (1) {
+[e :U 396 ]
+{
+"116
+[; ;lcd.frase.c: 116:         limpa_lcd( );
+[e ( _limpa_lcd ..  ]
+"117
+[; ;lcd.frase.c: 117:         _delay((unsigned long)((1000)*(4000000/4000.0)));
+[e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 4000000 `l `d .4000.0 `ul ]
+"118
+[; ;lcd.frase.c: 118:         comando_lcd(128);
+[e ( _comando_lcd (1 -> -> 128 `i `ui ]
+"119
+[; ;lcd.frase.c: 119:         imprime_lcd("Temperatura");
+[e ( _imprime_lcd (1 :s 3C ]
+"121
+[; ;lcd.frase.c: 121:         comando_lcd(192);
+[e ( _comando_lcd (1 -> -> 192 `i `ui ]
+"122
+[; ;lcd.frase.c: 122:         sprintf(temperature, "%3.2f", temperatura);
+[e ( _sprintf (1 , (. , &U _temperature :s 4C -> _temperatura `d ]
+"123
+[; ;lcd.frase.c: 123:         imprime_lcd(temperature);
+[e ( _imprime_lcd (1 &U _temperature ]
+"124
+[; ;lcd.frase.c: 124:         _delay((unsigned long)((1000)*(4000000/4000.0)));
+[e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 4000000 `l `d .4000.0 `ul ]
+"125
+[; ;lcd.frase.c: 125:         tensao++;
+[e ++ _tensao -> 1 `i ]
+"126
+[; ;lcd.frase.c: 126:         if(tensao >= 5){
+[e $ ! >= _tensao -> 5 `i 398  ]
+{
+"127
+[; ;lcd.frase.c: 127:             tensao = 0;
+[e = _tensao -> 0 `i ]
+"128
+[; ;lcd.frase.c: 128:         }
 }
-[e :U 391 ]
-[e $U 392  ]
-[e :U 393 ]
-"110
-[; ;lcd.frase.c: 110: }
-[e :UE 390 ]
+[e :U 398 ]
+"129
+[; ;lcd.frase.c: 129:     }
+}
+[e :U 395 ]
+[e $U 396  ]
+[e :U 397 ]
+"130
+[; ;lcd.frase.c: 130: }
+[e :UE 394 ]
 }
 [p f _sprintf 8495104 ]
 [a 4C 37 51 46 50 102 0 ]

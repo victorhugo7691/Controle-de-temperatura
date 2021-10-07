@@ -14,9 +14,35 @@
 #include "lcd.intermed.h";
 
 char temperature[8];
-float temperatura;
-float temperaturaMaxima = 50;
-float temperaturaMinima = 25;
+float temperatura = 40;
+float temperaturaMaxima = 85;
+float temperaturaMinima = 15;
+int tensao;
+
+void geraTensao(){
+    switch(tensao){
+        case 0:
+            temperatura = 0;
+            break;
+        case 1: 
+            temperatura = 20;
+            break;
+        case 2:
+            temperatura = 40;
+            break;
+        case 3:
+            temperatura = 60;
+            break;
+        case 4:
+            temperatura = 80;
+            break;
+        case 5:
+            temperatura = 100;
+            break;
+        default:
+            temperatura = 10;
+    }
+}
 
 void alerta(){
     if(temperatura > temperaturaMaxima || temperatura < temperaturaMinima){
@@ -30,11 +56,9 @@ void alerta(){
 }
 
 void verificaOValor(){
-    if(temperatura>=50){
-                temperatura = temperatura - 10; 
-            } else if(temperatura <= 25){
-                temperatura = temperatura + 10 ;
-            }
+    if(temperatura >= temperaturaMaxima || temperatura <= temperaturaMinima){
+        tensao = 2;
+    } 
 }
 
 void __interrupt() isr(void){
@@ -43,15 +67,8 @@ void __interrupt() isr(void){
         
         INTCON3bits.INT1IF = 0;
        //Interrupção externa    
-            if(temperatura>=50){
-                temperatura--;
-                
-            } else if(temperatura <= 25){
-                temperatura++;
-            } else  {
-                temperatura--;
-            }
-           }
+       tensao--;
+    }
     
     if(INTCONbits.TMR0IE && INTCONbits.TMR0IF) {
         /*Interrupção de timer 
@@ -60,8 +77,7 @@ void __interrupt() isr(void){
          */
         alerta();
         verificaOValor();
-        
-        temperatura = temperatura - 0.01;
+        geraTensao();
         
 		TMR0L = 5; //'recarga do timer0
         
@@ -77,7 +93,7 @@ int main(){
     INTCONbits.TMR0IE = 1; //Habilita a interrupção do TMR0
     
 	T0CON = 0B11000111; //Configura o prescalar, o prescaler define o número de vezes que um evento deve ocorrer
-    TMR0L = 5; 
+    TMR0L = 5; //16,38s
     
     TRISD = 0; // Configura a porta D como sáida
     TRISE = 0; // Configura a porta E como sáida
@@ -94,7 +110,7 @@ int main(){
     
     comando_lcd(128);
     imprime_lcd("CTRL Temperatura");
-    temperatura = 40.0;
+    tensao = 2;
      
     while (1) {
         limpa_lcd( );
@@ -106,5 +122,9 @@ int main(){
         sprintf(temperature, "%3.2f", temperatura);
         imprime_lcd(temperature);
         __delay_ms(1000);
+        tensao++;
+        if(tensao >= 5){
+            tensao = 0;
+        }
     }
 }
